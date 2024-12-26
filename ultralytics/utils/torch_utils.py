@@ -166,7 +166,7 @@ def select_device(device="", batch=0, newline=False, verbose=True):
     if isinstance(device, torch.device) or str(device).startswith("tpu"):
         return device
 
-    s = f"Ultralytics {__version__} 🚀 Python-{PYTHON_VERSION} torch-{torch.__version__} "
+    s = f"Python-{PYTHON_VERSION} torch-{torch.__version__} "
     device = str(device).lower()
     for remove in "cuda:", "none", "(", ")", "[", "]", "'", " ":
         device = device.replace(remove, "")  # to string, 'cuda:0' -> '0' and '(0, 1)' -> '0,1'
@@ -228,7 +228,8 @@ def select_device(device="", batch=0, newline=False, verbose=True):
     if arg in {"cpu", "mps"}:
         torch.set_num_threads(NUM_THREADS)  # reset OMP_NUM_THREADS for cpu training
     if verbose:
-        LOGGER.info(s if newline else s.rstrip())
+        pass
+        # LOGGER.info(s if newline else s.rstrip())
     return torch.device(arg)
 
 
@@ -308,20 +309,20 @@ def model_info(model, detailed=False, verbose=True, imgsz=640):
     n_g = get_num_gradients(model)  # number of gradients
     n_l = len(list(model.modules()))  # number of layers
     if detailed:
-        LOGGER.info(f"{'layer':>5}{'name':>40}{'gradient':>10}{'parameters':>12}{'shape':>20}{'mu':>10}{'sigma':>10}")
+        # LOGGER.info(f"{'layer':>5}{'name':>40}{'gradient':>10}{'parameters':>12}{'shape':>20}{'mu':>10}{'sigma':>10}")
         for i, (name, p) in enumerate(model.named_parameters()):
             name = name.replace("module_list.", "")
-            LOGGER.info(
-                f"{i:>5g}{name:>40s}{p.requires_grad!r:>10}{p.numel():>12g}{str(list(p.shape)):>20s}"
-                f"{p.mean():>10.3g}{p.std():>10.3g}{str(p.dtype):>15s}"
-            )
+            # LOGGER.info(
+            #     f"{i:>5g}{name:>40s}{p.requires_grad!r:>10}{p.numel():>12g}{str(list(p.shape)):>20s}"
+            #     f"{p.mean():>10.3g}{p.std():>10.3g}{str(p.dtype):>15s}"
+            # )
 
     flops = get_flops(model, imgsz)  # imgsz may be int or list, i.e. imgsz=640 or imgsz=[640, 320]
     fused = " (fused)" if getattr(model, "is_fused", lambda: False)() else ""
     fs = f", {flops:.1f} GFLOPs" if flops else ""
     yaml_file = getattr(model, "yaml_file", "") or getattr(model, "yaml", {}).get("yaml_file", "")
     model_name = Path(yaml_file).stem.replace("yolo", "YOLO") or "Model"
-    LOGGER.info(f"{model_name} summary{fused}: {n_l:,} layers, {n_p:,} parameters, {n_g:,} gradients{fs}")
+    # LOGGER.info(f"{model_name} summary{fused}: {n_l:,} layers, {n_p:,} parameters, {n_g:,} gradients{fs}")
     return n_l, n_p, n_g, flops
 
 

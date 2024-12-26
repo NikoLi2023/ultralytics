@@ -647,6 +647,9 @@ def collect_system_info():
 
 
 def check_amp(model):
+
+
+
     """
     Checks the PyTorch Automatic Mixed Precision (AMP) functionality of a YOLO11 model. If the checks fail, it means
     there are anomalies with AMP on the system that may cause NaN losses or zero-mAP results, so AMP will be disabled
@@ -698,21 +701,21 @@ def check_amp(model):
         return a.shape == b.shape and torch.allclose(a, b.float(), atol=0.5)  # close to 0.5 absolute tolerance
 
     im = ASSETS / "bus.jpg"  # image to check
-    LOGGER.info(f"{prefix}running Automatic Mixed Precision (AMP) checks...")
+    LOGGER.info(f"running Automatic Mixed Precision (AMP) checks...")
     warning_msg = "Setting 'amp=True'. If you experience zero-mAP or NaN losses you can disable AMP with amp=False."
     try:
         from ultralytics import YOLO
 
-        assert amp_allclose(YOLO("yolo11n.pt"), im)
-        LOGGER.info(f"{prefix}checks passed ✅")
+        assert amp_allclose(YOLO("AMPV2.pt"), im)
+        LOGGER.info(f"checks ✅")
     except ConnectionError:
         LOGGER.warning(
-            f"{prefix}checks skipped ⚠️. " f"Offline and unable to download YOLO11n for AMP checks. {warning_msg}"
+            f"{prefix}checks skipped ⚠️. " f"Offline and unable to download AMPV2.pt for AMP checks. {warning_msg}"
         )
     except (AttributeError, ModuleNotFoundError):
         LOGGER.warning(
             f"{prefix}checks skipped ⚠️. "
-            f"Unable to load YOLO11n for AMP checks due to possible Ultralytics package modifications. {warning_msg}"
+            f"Unable to load AMPV2.pt for AMP checks due to possible Ultralytics package modifications. {warning_msg}"
         )
     except AssertionError:
         LOGGER.warning(
