@@ -6,6 +6,8 @@ from pathlib import Path
 from ultralytics.utils import get_user_config_dir
 import shutil
 import clr
+import sys
+import io
 
 clr.AddReference("ModelCrypto")
 ClassifyDatasFolder: str = "ClassifyDatas"
@@ -130,7 +132,21 @@ def GQImageTrain2(
         os.remove(modelParserPath)
 
 
+# class Echo:
+#     def __init__(self, file):
+#         self.file = file
+#
+#     def write(self, msg):
+#         with open(self.file, 'a') as f:
+#             f.write(msg)
+#         sys.stdout.write(msg)  # 直接回显到控制台
+#
+#     def flush(self):
+#         pass
+
+
 if __name__ == "__main__":
+    # 订阅output的消息
     print("Current Version: 25.3.3")
     try:
         GPUs = GPUtil.getGPUs()
