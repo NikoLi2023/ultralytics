@@ -85,12 +85,16 @@ def GQImageTrainV2(
         results = model.train(data=datacfg, epochs=epochs, device=devices)
         if IsExportOnnx:
             success = model.export(format="onnx")
-            print(success)
+            onnxPath = os.path.dirname(success)
+            ModelCrypto.EncryptFolder(onnxPath)
+            print("complete: 【" + onnxPath + "】")
     elif tasktype == TaskType.Classify:
         results = model.train(data=datacfg, epochs=epochs, device=devices, imgsz=224)
         if IsExportOnnx:
             success = model.export(format="onnx")
-            print(success)
+            onnxPath = os.path.dirname(success)
+            ModelCrypto.EncryptFolder(onnxPath)
+            print("complete: 【" + onnxPath + "】")
 
     if isDelete:  # 最后删除解密的模型文件
         os.remove(modelParserPath)
@@ -116,7 +120,6 @@ def GQImageTrain2(
         results = model.train(data=datacfg, epochs=epochs, device=devices)
         if IsExportOnnx:
             success = model.export(format="onnx")
-            # print(success)
             onnxPath = os.path.dirname(success)
             ModelCrypto.EncryptFolder(onnxPath)
             print("complete: 【" + onnxPath + "】")
@@ -130,20 +133,6 @@ def GQImageTrain2(
             print("complete: 【" + onnxPath + "】")
     if isDelete:  # 最后删除解密的模型文件
         os.remove(modelParserPath)
-
-
-# class Echo:
-#     def __init__(self, file):
-#         self.file = file
-#
-#     def write(self, msg):
-#         with open(self.file, 'a') as f:
-#             f.write(msg)
-#         sys.stdout.write(msg)  # 直接回显到控制台
-#
-#     def flush(self):
-#         pass
-
 
 if __name__ == "__main__":
     # 订阅output的消息
@@ -231,9 +220,8 @@ if __name__ == "__main__":
                         os.makedirs(ClassifyDatasFolder)
                     # 遍历ClassifyDatas文件夹下的所有文件夹名称
                     folders = []
-                    for root, dirs, files in os.walk(ClassifyDatasFolder):
-                        for dir in dirs:
-                            folders.append(dir)
+                    for folder_name in os.listdir(ClassifyDatasFolder):
+                        folders.append(folder_name)
                     print("Please select blew a classify folder:")
                     index = 0
                     for eachfolder in folders:
@@ -293,11 +281,10 @@ if __name__ == "__main__":
                 # 如果不存在ClassifyDatas创建该文件夹
                 if not os.path.exists(ClassifyDatasFolder):
                     os.makedirs(ClassifyDatasFolder)
-                # 遍历ClassifyDatas文件夹下的所有文件夹名称
+                # 遍历ClassifyDatas文件夹下的第一层件夹名称
                 folders = []
-                for root, dirs, files in os.walk(ClassifyDatasFolder):
-                    for dir in dirs:
-                        folders.append(dir)
+                for folder_name in os.listdir(ClassifyDatasFolder):
+                    folders.append(folder_name)
                 print("Please select blew a classify folder:")
                 index = 0
                 for eachfolder in folders:
