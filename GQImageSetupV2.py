@@ -12,31 +12,22 @@ import io
 clr.AddReference("ModelCrypto")
 ClassifyDatasFolder: str = "ClassifyDatas"
 from ModelCrypto import *
+
+
 class ModelType:
     Nano = 0
     Small = 1
     Medium = 2
     Large = 3
     ExtraLarge = 4
+
+
 class TaskType:
     Detect = 0
     Segment = 1
     Classify = 2
     Pose = 3
-# class Logger(object):
-#     def __init__(self, filename="log.txt"):
-#         self.terminal = sys.stdout
-#         # self.log = open(filename, "a")
-#
-#     def write(self, message):
-#         content:str=str(message).strip("\n")
-#         if content!="":
-#             message = time.strftime("%H:%M:%S", time.localtime()) + " " +content+ "\n"
-#             self.terminal.write(message)
-#             # self.log.write(message)
-#
-#     def flush(self):
-#         pass
+
 
 def GQImageTrainV2(
         modelType, datacfg, epochs, tasktype=TaskType.Detect, IsExportOnnx=True, devices="0"):
@@ -108,6 +99,7 @@ def GQImageTrainV2(
     if isDelete:  # 最后删除解密的模型文件
         os.remove(modelParserPath)
 
+
 def GQImageTrain2(
         modePath, datacfg, epochs, tasktype=TaskType.Detect, IsExportOnnx=True, devices="0"):
     isDelete: bool = False
@@ -142,11 +134,9 @@ def GQImageTrain2(
     if isDelete:  # 最后删除解密的模型文件
         os.remove(modelParserPath)
 
+
 if __name__ == "__main__":
     print("Current Version: 25.3.3")
-    # logtxt:str="log{}.txt"
-    # original_stdout=sys.stdout
-    # sys.stdout = Logger()
     try:
         GPUs = GPUtil.getGPUs()
         gpuCount = 0
@@ -318,6 +308,5 @@ if __name__ == "__main__":
     except Exception as e:
         print(str(e))
     finally:
-        # sys.stdout = original_stdout
         input("please enter any key to exit!")
         pass
